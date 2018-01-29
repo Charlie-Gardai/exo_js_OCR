@@ -27,14 +27,6 @@ var listeLiens = [
 // TODO : compléter ce fichier pour ajouter les liens à la page web
 var contenuElt = document.getElementById('contenu');
 
-function onCasseTout()
-{
-  var gimmeThePs = document.getElementsByTagName('p');
-  for (i = 0; i < gimmeThePs.length; i++) {
-    gimmeThePs[i].style.margin = '0';
-  }
-}
-
 function createLinkBox(titre, url)
 {
   var a = document.createElement('a');
@@ -78,6 +70,4 @@ window.onload = function ()
     var lienActuel = listeLiens[i];
     insertSpan(lienActuel.titre, lienActuel.url, lienActuel.auteur);
   }
-
-  onCasseTout();
 };
