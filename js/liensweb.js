@@ -6,23 +6,38 @@ Activité 1
 // - son titre
 // - son URL
 // - son auteur (la personne qui l'a publié)
-var listeLiens = [
-{
-  titre: 'So Foot',
-  url: 'http://sofoot.com',
-  auteur: 'yann.usaille',
-},
-{
-  titre: 'Guide d\'autodéfense numérique',
-  url: 'http://guide.boum.org',
-  auteur: 'paulochon',
-},
-{
-  titre: 'L\'encyclopédie en ligne Wikipedia',
-  url: 'http://Wikipedia.org',
-  auteur: 'annie.zette',
-},
+
+var link = {
+  init: function (titre, url, auteur)
+  {
+    this.titre = titre;
+    this.url = url;
+    this.auteur = auteur;
+  },
+};
+
+var links = [
+  new link.init(
+    'So Foot',
+    'http://sofoot.com',
+    'yann.usaille'
+  ),
+  new link.init(
+    'Guide d\'autodéfense numérique',
+    'http://guide.boum.org',
+    'paulochon'
+  ),
+  new link.init(
+    'L\'encyclopédie en ligne Wikipedia',
+    'http://Wikipedia.org',
+    'annie.zette'
+  ),
 ];
+
+function insertNewLink(titre, url, auteur)
+{
+  links.push(new link.init(titre, url, auteur));
+}
 
 // TODO : compléter ce fichier pour ajouter les liens à la page web
 var contenuElt = document.getElementById('contenu');
@@ -66,8 +81,8 @@ function insertSpan(titre, url, auteur)
 
 window.onload = function ()
 {
-  for (i = 0; i < listeLiens.length; i++) {
-    var lienActuel = listeLiens[i];
-    insertSpan(lienActuel.titre, lienActuel.url, lienActuel.auteur);
+  for (i = 0; i < links.length; i++) {
+    var l = links[i];
+    insertSpan(l.titre, l.url, l.auteur);
   }
 };
