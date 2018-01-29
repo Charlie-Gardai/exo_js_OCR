@@ -12,6 +12,8 @@ span
   font-size: 80%;
 }
 
+p { margin: 0; }
+
 .lien
 {
   background: white;
@@ -19,7 +21,7 @@ span
   margin-bottom: 10px;
 }
 
-p
+#navigation > button
 {
-  margin: 0;
+  margin-bottom: 10px;
 }
