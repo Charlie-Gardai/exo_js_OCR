@@ -16,6 +16,8 @@ var submit = form.querySelector('input[type="submit"]');
 
 var trueReg = false;
 
+var message = navigation.getElementsByTagName('section')[0];
+
 var contenuElt = document.getElementById('contenu');
 
 //création de l'objet link
@@ -77,8 +79,9 @@ function createLinkBox(titre, url)
 }
 
 //insèree un span dans #contenu
-function insertSpan(titre, url, auteur)
+function insertSpan(titre, url, auteur, where)
 {
+  where = where || 0;
   var span = document.createElement('span');
   span.classList.add('lien');
   span.style.display = 'block';
@@ -89,9 +92,13 @@ function insertSpan(titre, url, auteur)
 
   span.appendChild(p);
 
-  contenuElt.appendChild(span);
+  //si on rentre 'before' en dernier paramètre
+  (where == 'before') ?
+    contenuElt.insertBefore(span, contenuElt.children[0]) :
+    contenuElt.appendChild(span);
 }
 
+//affichage intial
 function displayContent()
 {
   for (i = 0; i < links.length; i++) {
@@ -100,6 +107,7 @@ function displayContent()
   }
 }
 
+//test regex de l'url
 function testUrl(url)
 {
   var regex = new RegExp(/^(http:\/\/|https:\/\/)?[\w.\-_/]+[.]{1}[a-z]{2,}$/);
@@ -109,6 +117,23 @@ function testUrl(url)
   } else {
     urlElt.style.boxShadow = '0 0 3px 1px rgba(255,0,0,1)';
     trueReg = false;
+  }
+}
+
+var options = [
+  addButton.style.display,
+  form.style.display,
+  message.style.display,
+];
+
+function alternateDisplay(selection)
+{
+  for (i = 0; i < options.length; i++) {
+    if (i === selection - 1) {
+      options[i] = '';
+    } else {
+      options[i] = 'none';
+    }
   }
 }
 
@@ -161,10 +186,22 @@ submit.addEventListener('click', function (e)
       var regex = new RegExp(/^(http)[s]?:[/]{2}/);
       (regex.test(url.value)) ? url = 'http://' + url : '';
 
-      insertSpan(title, url, author);
+      insertSpan(title, url, author, 'before');
 
-      addButton.style.display = 'block';
+      addButton.style.display = 'none';
       form.style.display = 'none';
+
+      navigation.classList.add('message');
+      var textNode = 'Le lien ' + title + ' a bien été ajouté.';
+
+      message.style.display
+
+      setTimeout(function ()
+        {
+          navigation.classList.remove('message');
+        },
+
+      2000);
     } else {
       if (!author) {
         form.children[0].style.boxShadow = '0 0 3px 1px rgba(255,0,0,1)';
