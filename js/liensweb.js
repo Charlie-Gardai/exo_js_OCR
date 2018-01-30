@@ -81,6 +81,18 @@ function insertSpan(titre, url, auteur)
 
 window.onload = function ()
 {
+  var navigation = document.getElementById('navigation');
+  var addButton = navigation.getElementsByTagName('button')[0];
+  var form = navigation.getElementsByTagName('form')[0];
+  var submit = form.querySelector('input[type="submit"]'); console.log(listeLiens);
+
+  addButton.addEventListener('click', function ()
+  {
+    addButton.style.display = 'none';
+    form.style.display = 'flex';
+  }
+  );
+
   for (i = 0; i < links.length; i++) {
     var l = links[i];
     insertSpan(l.titre, l.url, l.auteur);
