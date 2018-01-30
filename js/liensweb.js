@@ -84,7 +84,7 @@ window.onload = function ()
   var navigation = document.getElementById('navigation');
   var addButton = navigation.getElementsByTagName('button')[0];
   var form = navigation.getElementsByTagName('form')[0];
-  var submit = form.querySelector('input[type="submit"]'); console.log(listeLiens);
+  var submit = form.querySelector('input[type="submit"]');
 
   addButton.addEventListener('click', function ()
   {

@@ -21,4 +21,36 @@ p { margin: 0; }
   margin-bottom: 10px;
 }
 
-#navigation > button { margin-bottom: 10px; }
+#navigation { margin-bottom: 20px; }
+
+#navigation button, #navigation input[type=submit]
+{
+  background-color: white;
+  border-radius: 5px;
+
+  padding: 1px 15px;
+
+  -webkit-box-shadow: 0 1px 1px black;
+  box-shadow: 0 .5px 1px rgba(0,0,0,.1);
+}
+#navigation button:active, #navigation input[type=submit]:active
+{
+  background: transparent linear-gradient(0deg, #3a77aa, #407eb2, #539cdb, #6fb2ed);
+  border: none;
+
+  text-shadow: 0 1px 1px white;
+}
+
+#navigation button, #navigation input { border: 1px solid #cdcdcd; }
+
+form > input
+{
+  width: 300px;
+  margin-right: 10px;
+}
+form > input[type=text]:focus
+{
+  -webkit-box-shadow: 0 0 5px 1px rgba(66,139,202,1);
+  box-shadow: 0 0 5px 1px rgba(66,139,202,1);
+}
+#navigation > form > input[type=text]:nth-child(1), #navigation > form > input[type=submit] { width: auto; }
