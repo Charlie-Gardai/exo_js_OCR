@@ -16,7 +16,7 @@ var submit = form.querySelector('input[type="submit"]');
 
 var trueReg = false;
 
-var message = navigation.getElementsByTagName('section')[0];
+var message = document.getElementById('message');
 
 var contenuElt = document.getElementById('contenu');
 
@@ -121,18 +121,18 @@ function testUrl(url)
 }
 
 var options = [
-  addButton.style.display,
-  form.style.display,
-  message.style.display,
+  addButton,
+  form,
+  message,
 ];
 
-function alternateDisplay(selection)
+function alternateNav(selection)
 {
   for (i = 0; i < options.length; i++) {
     if (i === selection - 1) {
-      options[i] = '';
+      options[i].removeAttribute('style');
     } else {
-      options[i] = 'none';
+      options[i].style.display = 'none';
     }
   }
 }
@@ -142,8 +142,7 @@ function alternateDisplay(selection)
 //on gère les display au click
 addButton.addEventListener('click', function ()
   {
-    addButton.style.display = 'none';
-    form.style.display = 'flex';
+    alternateNav(2);
   }
 );
 
@@ -191,14 +190,13 @@ submit.addEventListener('click', function (e)
       addButton.style.display = 'none';
       form.style.display = 'none';
 
-      navigation.classList.add('message');
-      var textNode = 'Le lien ' + title + ' a bien été ajouté.';
+      message.innerHTML = '<p>Le lien <strong>' + title + '</strong> a bien été ajouté</p>';
 
-      message.style.display
+      alternateNav(3);
 
       setTimeout(function ()
         {
-          navigation.classList.remove('message');
+          alternateNav(1);
         },
 
       2000);
@@ -219,5 +217,6 @@ submit.addEventListener('click', function (e)
 );
 
 /* ------------------- EXECUTION INITIALE ------------------- */
+alternateNav(1);
 testUrl(urlElt.value);
 displayContent();

@@ -1,3 +1,9 @@
+*
+{
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 body
 {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -28,7 +34,7 @@ p { margin: 0; }
   background-color: white;
   border-radius: 5px;
 
-  padding: 1px 15px;
+  padding: 2px 15px;
 
   -webkit-box-shadow: 0 1px 1px black;
   box-shadow: 0 .5px 1px rgba(0,0,0,.1);
@@ -54,3 +60,19 @@ form > input[type=text]:focus
   box-shadow: 0 0 3px 1px rgba(66,139,202,1);
 }
 #navigation > form > input[type=text]:nth-child(1), #navigation > form > input[type=submit] { width: auto; }
+
+#message
+{
+  height: 80px;
+  background-color: #b3dbfc;
+
+  color: #2e5577;
+
+  padding-left:1em;
+
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
+  align-content: center;
+}
