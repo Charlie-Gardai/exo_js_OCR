@@ -7,6 +7,7 @@ Activité 1
 // - son URL
 // - son auteur (la personne qui l'a publié)
 
+/* --------------------- SETUP ---------------------  */
 var navigation = document.getElementById('navigation');
 var addButton = navigation.getElementsByTagName('button')[0];
 var form = navigation.getElementsByTagName('form')[0];
@@ -14,19 +15,20 @@ var urlElt = form.querySelector('input[name=url]');
 
 var submit = form.querySelector('input[type="submit"]');
 
-var trueReg = false;
-
 var message = document.getElementById('message');
 
 var contenuElt = document.getElementById('contenu');
+
+var trueReg = false;
 
 /* --------------------- BOITE A COULEUR ---------------------  */
 var blueShadow = '0 0 3px 1px rgba(66,139,202,1)';
 var redShadow = '0 0 3px 1px rgba(255,0,0,1)';
 
 /* --------------------- OBJET ET STRUCTURE ---------------------  */
+
 //création de l'objet link
-var link = {
+var Link = {
   init: function (titre, url, auteur)
   {
     this.titre = titre;
@@ -37,27 +39,36 @@ var link = {
 
 //liste de liens de base
 var links = [
-  new link.init(
+  new Link.init(
     'So Foot',
     'http://sofoot.com',
     'yann.usaille'
   ),
-  new link.init(
+  new Link.init(
     'Guide d\'autodéfense numérique',
     'http://guide.boum.org',
     'paulochon'
   ),
-  new link.init(
+  new Link.init(
     'L\'encyclopédie en ligne Wikipedia',
     'http://Wikipedia.org',
     'annie.zette'
   ),
 ];
 
+//déclaration de la liste des options d'HTMLElement présents dans #navigation
+var options = [
+  addButton,
+  form,
+  message,
+];
+
+/* --------------------- BOITE A FONCTIONS ---------------------  */
+
 //insertion de nouveaux objets link dans la liste links
 function insertNewLink(titre, url, auteur)
 {
-  links.push(new link.init(titre, url, auteur));
+  links.push(new Link.init(titre, url, auteur));
 }
 
 // permet de créer un HTMLElement a
@@ -83,7 +94,7 @@ function createLinkBox(titre, url)
   return a;
 }
 
-//insèree un span dans #contenu
+//insère un span dans #contenu
 function insertSpan(titre, url, auteur, where)
 {
   where = where || 0;
@@ -132,13 +143,6 @@ function testUrl(isStart)
   }
 }
 
-//déclaration de la liste des options d'HTMLElement dans #navigation
-var options = [
-  addButton,
-  form,
-  message,
-];
-
 //permet d'alterner les HTMLElement dans #navigation
 function alternateNav(selection)
 {
@@ -172,7 +176,7 @@ for (i = 0; i < form.children.length - 1; i++) {
       if (!this.value) {
         this.style.boxShadow = redShadow;
       } else if (this.name === 'url') {
-        testUrl;
+        testUrl();
       }else {
         this.style.boxShadow = 'none';
       }
@@ -195,29 +199,26 @@ submit.addEventListener('click', function (e)
     var title = form.children[1].value;
     var url = form.children[2].value;
 
+    //si les champs sont valdie
     if (author && title && url && trueReg === true) {
       var regex = new RegExp(/^http[s]?:\/\//);
-      (regex.test(url)) ? console.log(url) : url = 'http://' + url;
+      (regex.test(url)) ? console.log(url) : url = 'http://' + url;//si pas de 'http://' on l'ajoute
 
-      insertSpan(title, url, author, 'before');
+      insertSpan(title, url, author, 'before');//on ajoute le lien 'before'
 
-      addButton.style.display = 'none';
-      form.style.display = 'none';
-
-      message.innerHTML = '<p>Le lien <strong>' + title + '</strong> a bien été ajouté</p>';
-
+      //préparation du message
+      message.innerHTML = '<p>Le lien <strong>' +
+                          title +
+                          '</strong> a bien été ajouté</p>';
       alternateNav(3);
       for (i = 0; i < 3; i++) {
         form.children[i].value = null;
       }
 
-      setTimeout(function ()
-        {
-          alternateNav(1);
-        },
-
-      2000);
+      //retour à l'affichage initial après 2000 milisec
+      setTimeout(function () { alternateNav(1); }, 2000);
     } else {
+      /*GESTION DES ERREURS DE SAISIE*/
       if (!author) {
         form.children[0].style.boxShadow = redShadow;
       }
