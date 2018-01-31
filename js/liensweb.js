@@ -20,6 +20,11 @@ var message = document.getElementById('message');
 
 var contenuElt = document.getElementById('contenu');
 
+/* --------------------- BOITE A COULEUR ---------------------  */
+var blueShadow = '0 0 3px 1px rgba(66,139,202,1)';
+var redShadow = '0 0 3px 1px rgba(255,0,0,1)';
+
+/* --------------------- OBJET ET STRUCTURE ---------------------  */
 //création de l'objet link
 var link = {
   init: function (titre, url, auteur)
@@ -58,24 +63,24 @@ function insertNewLink(titre, url, auteur)
 // permet de créer un HTMLElement a
 function createLinkBox(titre, url)
 {
-  var a = document.createElement('a');
-  a.href = url;
-  a.setAttribute('target', '_blank');
-  a.textContent = titre;
-  a.style.fontSize = '20px';
-  a.style.fontWeight = 'bold';
-  a.style.color = '#428bca';
-  a.style.textDecoration = 'none';
-  a.style.margin = '0 .3em 0 0';
+  var strong = document.createElement('strong');
+  strong.textContent = titre;
+  strong.style.fontSize = '20px';
+  strong.style.fontWeight = 'bold';
+  strong.style.color = '#428bca';
+  strong.style.textDecoration = 'none';
+  strong.style.margin = '0 .3em 0 0';
   var p = document.createElement('p');
   p.textContent = url;
 
-  var div = document.createElement('div');
-  div.style.display = 'flex';
-  div.style.alignItems = 'baseline';
-  div.appendChild(a);
-  div.appendChild(p);
-  return div;
+  var a = document.createElement('a');
+  a.href = url;
+  a.target = '_balnk';
+  a.style.display = 'flex';
+  a.style.alignItems = 'baseline';
+  a.appendChild(strong);
+  a.appendChild(p);
+  return a;
 }
 
 //insèree un span dans #contenu
@@ -108,24 +113,33 @@ function displayContent()
 }
 
 //test regex de l'url
-function testUrl(url)
+function testUrl(isStart)
 {
-  var regex = new RegExp(/^(http:\/\/|https:\/\/)?[\w.\-_/]+[.]{1}[a-z]{2,}$/);
-  if (regex.test(url)) {
-    urlElt.style.boxShadow = '0 0 3px 1px rgba(66,139,202,1)';
+  isStart = isStart || 0;
+  var regex = new RegExp(/^(http:\/\/|https:\/\/)?[\w.\-_/]+\.[a-z]{2,}/);
+  if (regex.test(urlElt.value)) {
+    if (isStart !== true) {
+      urlElt.style.boxShadow = blueShadow;
+    }
+
     trueReg = true;
   } else {
-    urlElt.style.boxShadow = '0 0 3px 1px rgba(255,0,0,1)';
+    if (isStart !== true) {
+      urlElt.style.boxShadow = redShadow;
+    }
+
     trueReg = false;
   }
 }
 
+//déclaration de la liste des options d'HTMLElement dans #navigation
 var options = [
   addButton,
   form,
   message,
 ];
 
+//permet d'alterner les HTMLElement dans #navigation
 function alternateNav(selection)
 {
   for (i = 0; i < options.length; i++) {
@@ -140,26 +154,26 @@ function alternateNav(selection)
 /* ------------------- GESTION DES EVENTS ------------------- */
 
 //on gère les display au click
-addButton.addEventListener('click', function ()
-  {
-    alternateNav(2);
-  }
-);
+addButton.addEventListener('click', function () { alternateNav(2); });
 
 //on ajoute des comportements event à tous les input du form sauf le dernier - c'est le submit
 for (i = 0; i < form.children.length - 1; i++) {
-  var prevShadow;
   form.children[i].addEventListener('focusin', function ()
     {
-      prevShadow = this.style.boxShadow;
-      this.style.boxShadow = '0 0 3px 1px rgba(66,139,202,1)';
+      if (this.getAttribute('name') !== 'url') {
+        this.style.boxShadow = blueShadow;
+      } else {
+        testUrl();
+      }
     }
   );
   form.children[i].addEventListener('focusout', function ()
     {
       if (!this.value) {
-        this.style.boxShadow = '0 0 3px 1px rgba(255,0,0,1)';
-      } else {
+        this.style.boxShadow = redShadow;
+      } else if (this.name === 'url') {
+        testUrl;
+      }else {
         this.style.boxShadow = 'none';
       }
     }
@@ -169,7 +183,7 @@ for (i = 0; i < form.children.length - 1; i++) {
 //test sur la syntaxe de l'url ; trueReg = true si valide, false si invalide
 form.querySelector('input[name=url]').addEventListener('input', function ()
   {
-    testUrl(this.value);
+    testUrl();
   }
 );
 
@@ -182,8 +196,8 @@ submit.addEventListener('click', function (e)
     var url = form.children[2].value;
 
     if (author && title && url && trueReg === true) {
-      var regex = new RegExp(/^(http)[s]?:[/]{2}/);
-      (regex.test(url.value)) ? url = 'http://' + url : '';
+      var regex = new RegExp(/^http[s]?:\/\//);
+      (regex.test(url)) ? console.log(url) : url = 'http://' + url;
 
       insertSpan(title, url, author, 'before');
 
@@ -193,6 +207,9 @@ submit.addEventListener('click', function (e)
       message.innerHTML = '<p>Le lien <strong>' + title + '</strong> a bien été ajouté</p>';
 
       alternateNav(3);
+      for (i = 0; i < 3; i++) {
+        form.children[i].value = null;
+      }
 
       setTimeout(function ()
         {
@@ -202,15 +219,15 @@ submit.addEventListener('click', function (e)
       2000);
     } else {
       if (!author) {
-        form.children[0].style.boxShadow = '0 0 3px 1px rgba(255,0,0,1)';
+        form.children[0].style.boxShadow = redShadow;
       }
 
       if (!title) {
-        form.children[1].style.boxShadow = '0 0 3px 1px rgba(255,0,0,1)';
+        form.children[1].style.boxShadow = redShadow;
       }
 
       if (!url) {
-        form.children[2].style.boxShadow = '0 0 3px 1px rgba(255,0,0,1)';
+        form.children[2].style.boxShadow = redShadow;
       }
     }
   }
@@ -218,5 +235,5 @@ submit.addEventListener('click', function (e)
 
 /* ------------------- EXECUTION INITIALE ------------------- */
 alternateNav(1);
-testUrl(urlElt.value);
+testUrl(true);
 displayContent();
